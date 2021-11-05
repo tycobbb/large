@@ -34,9 +34,9 @@ Shader "Custom/DesertHeight" {
             }
 
             // -- noise --
-            float Noise(float2 pos) {
-                float2 i = floor(pos);
-                float2 f = frac(pos);
+            float Noise(float2 st) {
+                float2 i = floor(st);
+                float2 f = frac(st);
                 float2 u = f * f * (3.0 - 2.0 * f);
 
                 float res = lerp(
@@ -65,10 +65,12 @@ Shader "Custom/DesertHeight" {
 
             fixed4 DrawFrag(FragIn f) : SV_Target {
                 // scale by uniform
-                float2 pos = f.pos * _Scale;
+                float2 st = f.pos * _Scale;
+                st.x += _SinTime;
+                st.y += _SinTime;
 
                 // generate noise
-                float c = Noise(pos);
+                float c = Noise(st);
                 // c = c * 0.5f + 0.5f;
 
                 // produce color

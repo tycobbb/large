@@ -13,10 +13,29 @@ public class Desert: MonoBehaviour {
 
     // -- lifecycle --
     void Update() {
+        var td = m_Terrain.terrainData;
+
+        // render a new heightmap
         Graphics.Blit(
             null,
-            m_Terrain.terrainData.heightmapTexture,
+            td.heightmapTexture,
             m_TerrainHeight
         );
+
+        // mark the entire heightmap as dirty
+        var tr = new RectInt(
+            0,
+            0,
+            td.heightmapResolution,
+            td.heightmapResolution
+        );
+
+        td.DirtyHeightmapRegion(
+            tr,
+            TerrainHeightmapSyncControl.HeightOnly
+        );
+
+        // sync it
+        td.SyncHeightmap();
     }
 }

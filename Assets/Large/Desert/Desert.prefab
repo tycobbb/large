@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Terrain: {fileID: 241846632514298462}
+  m_TerrainHeight: {fileID: 2100000, guid: 7d71e3592d22344bda8e2a5aabb505d4, type: 2}
 --- !u!218 &241846632514298462
 Terrain:
   m_ObjectHideFlags: 0

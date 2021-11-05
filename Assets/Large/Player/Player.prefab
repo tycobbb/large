@@ -136,7 +136,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.7949448, g: 0.8086508, b: 0.8301887, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -516,8 +516,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8073847765199990127}
   - component: {fileID: 8073847765199990126}
+  - component: {fileID: 1319049452831850312}
+  - component: {fileID: 5155576628024317162}
   - component: {fileID: 8073847765199990129}
-  - component: {fileID: 8073847765199990128}
+  - component: {fileID: 7741282325461415205}
   m_Layer: 1
   m_Name: Player
   m_TagString: Player
@@ -560,6 +562,38 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1319049452831850312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073847765199990131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b2e7a983ad54b0a93afe528e9820af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  independentAudioHandling: 0
+  m_KeyOf: 0
+  m_Music: {fileID: 5155576628024317162}
+--- !u!114 &5155576628024317162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073847765199990131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8ed092cd6654f1c9575cc95fbe061c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxVolume: 0
+  m_Template: {fileID: 0}
+  m_NumSources: 2
+  m_Sources: []
+  m_Instrument: {fileID: 0}
 --- !u!114 &8073847765199990129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,7 +704,7 @@ MonoBehaviour:
   sounds:
     enableAudio: 1
     unscaledTime: 0
-    audioType: 0
+    audioType: 2
     basedOnHeadBob: 1
     stepTime: 1.5
     walkFootsteps:
@@ -681,11 +715,7 @@ MonoBehaviour:
       maxPitch: 1.1
       changeVolume: 1
       volume: 1
-      audioClips:
-      - {fileID: 8300000, guid: 44e59b73420f0e64fb30e755c49b3823, type: 3}
-      - {fileID: 8300000, guid: 62e6bf700540ea9478b91b33afa85e7e, type: 3}
-      - {fileID: 8300000, guid: bbe4ed33245f5804db42ff8c43d75412, type: 3}
-      - {fileID: 8300000, guid: 1e5761292ed025241bdb02ff49c552dd, type: 3}
+      audioClips: []
     runFootsteps:
       enabled: 1
       randomPitch: 1
@@ -694,11 +724,7 @@ MonoBehaviour:
       maxPitch: 1.6
       changeVolume: 1
       volume: 1
-      audioClips:
-      - {fileID: 8300000, guid: 44e59b73420f0e64fb30e755c49b3823, type: 3}
-      - {fileID: 8300000, guid: 62e6bf700540ea9478b91b33afa85e7e, type: 3}
-      - {fileID: 8300000, guid: bbe4ed33245f5804db42ff8c43d75412, type: 3}
-      - {fileID: 8300000, guid: 1e5761292ed025241bdb02ff49c552dd, type: 3}
+      audioClips: []
     crouchFootsteps:
       enabled: 1
       randomPitch: 1
@@ -720,8 +746,7 @@ MonoBehaviour:
       maxPitch: 1.1
       changeVolume: 1
       volume: 1
-      audioClips:
-      - {fileID: 8300000, guid: 11cc82c4daa9f304dbbfab62c9207608, type: 3}
+      audioClips: []
     landing:
       enabled: 1
       randomPitch: 1
@@ -730,12 +755,11 @@ MonoBehaviour:
       maxPitch: 1.1
       changeVolume: 1
       volume: 1
-      audioClips:
-      - {fileID: 8300000, guid: ceb0f9d730c213441b4eaccb59f6fcde, type: 3}
+      audioClips: []
     footstepsSource: {fileID: 8073847764553654464}
     jumpSource: {fileID: 8073847764553654467}
     landSource: {fileID: 8073847764553654469}
---- !u!114 &8073847765199990128
+--- !u!114 &7741282325461415205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -744,35 +768,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 8073847765199990131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
+  m_Script: {fileID: 11500000, guid: a2fb832ec185ffc4481590e0f1a3b8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useKeyCodes: 1
-  inputs:
-  - buttonName: Horizontal
-    inputName: Horizontal
-    key: 0
-  - buttonName: Vertical
-    inputName: Vertical
-    key: 0
-  - buttonName: Mouse X
-    inputName: Mouse X
-    key: 0
-  - buttonName: Mouse Y
-    inputName: Mouse Y
-    key: 0
-  - buttonName: Jump
-    inputName: Jump
-    key: 32
-  - buttonName: Crouch
-    inputName: Crouch
-    key: 99
-  - buttonName: Run
-    inputName: Run
-    key: 304
-  - buttonName: Interact
-    inputName: Interact
-    key: 101
+  inputAsset: {fileID: -944628639613478452, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  actions:
+  - actionName: Look
+    action: {fileID: 6940538419726410420, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  - actionName: Move
+    action: {fileID: -1246895598473198080, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  - actionName: Jump
+    action: {fileID: 335763634227698153, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  - actionName: Run
+    action: {fileID: 5190739044734946418, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  - actionName: Crouch
+    action: {fileID: 5064262545289094806, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  - actionName: Interact
+    action: {fileID: -5548793354506133487, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
+  autoEnableInput: 1
+  autoDisableInput: 1
 --- !u!1 &8073847765385277768
 GameObject:
   m_ObjectHideFlags: 0
