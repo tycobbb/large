@@ -1,6 +1,8 @@
-Shader "Custom/Sky" {
+Shader "Custom/Desert" {
     Properties {
         _Scale ("Scale", Float) = 1.0
+        _Period ("Period", Float) = 0.1
+        _Bands ("Bands", Int) = -1
     }
 
     SubShader {
@@ -14,35 +16,43 @@ Shader "Custom/Sky" {
             #pragma vertex DrawVert
             #pragma fragment DrawFrag
 
+            // -- includes --
+            #include "UnityCG.cginc"
+
             // -- types --
             /// the vertex shader input
             struct VertIn {
-                float4 vertex : POSITION;
+                float4 pos : POSITION;
             };
 
             /// the fragment shader input
             struct FragIn {
-                float4 pos : SV_POSITION;
+                float4 cPos : SV_POSITION;
+                float4 wPos : TEXCOORD0;
+                float3 vPos : TEXCOORD1;
+                float3 vDir : TEXCOORD2;
             };
 
             // -- props --
             /// the noise scale
             float _Scale;
 
+            /// the noise period
+            float _Period;
+
+            /// the number of bands
+            float _Bands;
+
             // -- noise --
             /// get random value at pt
             float2 Gradient(float2 st) {
-                // 2D to 1D  (feel free to replace by some other)
+                // 2d to 1d
                 int n = st.x + st.y * 11111;
 
-                // Hugo Elias hash (feel free to replace by another one)
+                // hugo elias hash
                 n = (n << 13) ^ n;
                 n = (n * (n * n * 15731 + 789221) + 1376312589) >> 16;
 
-            #if 0
-                // simple random vectors
-                return vec2(cos(float(n)),sin(float(n)));
-            #else
                 // perlin style vectors
                 n &= 7;
                 float2 gr = float2(n & 1, n >> 1) * 2.0 - 1.0;
@@ -53,7 +63,6 @@ Shader "Custom/Sky" {
                 } else {
                     return gr;
                 }
-            #endif
             }
 
             float Noise(float2 st) {
@@ -78,22 +87,58 @@ Shader "Custom/Sky" {
                 return res;
             }
 
+            float Image(float2 st) {
+                float2x2 m = float2x2(1.6, 1.2, -1.2, 1.6);
+
+                // blend noise
+                float c = 0.0f;
+                c  = 0.5000f * Noise(st);
+                st = mul(st, m);
+                c += 0.2500f * Noise(st);
+                st = mul(st, m);
+                c += 0.1250f * Noise(st);
+                st = mul(st, m);
+                c += 0.0625f * Noise(st);
+                st = mul(st, m);
+
+                // shift range
+                c = c + 0.5f;
+
+                // apply banding
+                if (_Bands != -1.0f) {
+                    c = floor(c * _Bands) / (_Bands - 1.0f);
+                }
+
+                return c;
+            }
+
             // -- program --
             FragIn DrawVert(VertIn v) {
+                float3 pos = v.pos.xyz;
+
                 FragIn o;
-                o.pos = UnityObjectToClipPos(v.vertex);
+                o.cPos = UnityObjectToClipPos(pos);
+                o.wPos = mul(unity_ObjectToWorld, float4(pos, 1.0));
+                o.vDir = WorldSpaceViewDir(v.pos);
+
                 return o;
             }
 
             fixed4 DrawFrag(FragIn f) : SV_Target {
                 // scale by uniform
-                float2 st = f.pos * _Scale;
-                st.x += _SinTime;
-                st.y += _SinTime;
+                float2 st = float2(
+                    dot(normalize(f.wPos), f.vDir),
+                    dot(normalize(f.cPos), f.vDir)
+                );
 
-                // generate noise
-                float c = Noise(st);
-                // c = c * 0.5f + 0.5f;
+                st *= _Scale;
+
+                // shift w/ time
+                st.x += _Time * _Period;
+                st.y += _Time * _Period;
+
+                // generate image
+                float c = Image(st);
 
                 // produce color
                 return fixed4(c, c, c, 1.0f);
