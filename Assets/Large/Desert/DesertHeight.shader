@@ -27,7 +27,6 @@ Shader "Custom/DesertHeight" {
             /// the fragment shader input
             struct FragIn {
                 float4 cPos : SV_POSITION;
-                float4 wPos : TEXCOORD0;
             };
 
             // -- props --
@@ -103,7 +102,6 @@ Shader "Custom/DesertHeight" {
 
                 FragIn o;
                 o.cPos = UnityObjectToClipPos(pos);
-                o.wPos = mul(unity_ObjectToWorld, float4(pos, 1.0));
 
                 return o;
             }

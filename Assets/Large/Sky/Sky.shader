@@ -3,6 +3,10 @@ Shader "Custom/Desert" {
         _Scale ("Scale", Float) = 1.0
         _Period ("Period", Float) = 0.1
         _Bands ("Bands", Int) = -1
+        _HueMin ("Hue Min", Range(0.0, 2.0)) = 0.0
+        _HueMax ("Hue Max", Range(0.0, 2.0)) = 0.0
+        _Saturation ("Saturation", Range(0.0, 1.0)) = 0.4
+        _Value ("Value", Range(0.0, 1.0)) = 0.9
     }
 
     SubShader {
@@ -18,6 +22,7 @@ Shader "Custom/Desert" {
 
             // -- includes --
             #include "UnityCG.cginc"
+            #include "../Post/Core/Color.cginc"
 
             // -- types --
             /// the vertex shader input
@@ -29,7 +34,6 @@ Shader "Custom/Desert" {
             struct FragIn {
                 float4 cPos : SV_POSITION;
                 float4 wPos : TEXCOORD0;
-                float3 vPos : TEXCOORD1;
                 float3 vDir : TEXCOORD2;
             };
 
@@ -42,6 +46,18 @@ Shader "Custom/Desert" {
 
             /// the number of bands
             float _Bands;
+
+            /// the minimum hue
+            float _HueMin;
+
+            /// the maximum hue
+            float _HueMax;
+
+            /// the saturation
+            float _Saturation;
+
+            /// the value
+            float _Value;
 
             // -- noise --
             /// get random value at pt
@@ -102,7 +118,7 @@ Shader "Custom/Desert" {
                 st = mul(st, m);
 
                 // shift range
-                c = c + 0.5f;
+                c = frac(c + 0.5f);
 
                 // apply banding
                 if (_Bands != -1.0f) {
@@ -138,10 +154,14 @@ Shader "Custom/Desert" {
                 st.y += _Time * _Period;
 
                 // generate image
-                float c = Image(st);
+                float3 c = IntoRgb(float3(
+                    lerp(_HueMin, _HueMax, Image(st)),
+                    _Saturation,
+                    _Value
+                ));
 
                 // produce color
-                return fixed4(c, c, c, 1.0f);
+                return fixed4(c, 1.0f);
             }
             ENDCG
         }
