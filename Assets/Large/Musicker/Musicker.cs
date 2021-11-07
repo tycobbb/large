@@ -8,7 +8,7 @@ public sealed class Musicker: MonoBehaviour {
     [Header("tuning")]
     [Tooltip("the max volume")]
     [Range(0.0f, 1.0f)]
-    [SerializeField] float m_MaxVolume;
+    [SerializeField] float m_MaxVolume = 1.0f;
 
     [Tooltip("the template audio source")]
     [SerializeField] AudioSource m_Template;

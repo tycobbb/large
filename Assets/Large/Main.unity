@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &667361944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8073847765199990129, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+  m_PrefabInstance: {fileID: 8073847763669536478}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d54dcacf068ab4691c871452b251be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1215342138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -273,6 +284,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1375515814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5088435985456628295, guid: b09c71f5fea644b23833aef4f57855e2, type: 3}
+  m_PrefabInstance: {fileID: 1215342138}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead7adb9bee04b28b51bdda8ff1fc118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &241846632557026461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -341,6 +363,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1319049452831850312, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 667361944}
+    - target: {fileID: 5155576628024317162, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+      propertyPath: m_MaxVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155576628024317162, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+      propertyPath: m_Instrument
+      value: 
+      objectReference: {fileID: 1375515814}
+    - target: {fileID: 5155576628024317162, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+      propertyPath: m_NumSources
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8073847765199990127, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
       propertyPath: m_RootOrder
       value: 1
