@@ -4,7 +4,9 @@ Shader "Custom/DesertHeight" {
     }
 
     SubShader {
-        Tags { "RenderType"="Opaque" }
+        Tags {
+            "RenderType"="Opaque"
+        }
 
         Pass {
             CGPROGRAM

@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 8073847764402233273}
   - component: {fileID: 8073847764402233272}
   - component: {fileID: 8073847764402233275}
+  - component: {fileID: 1464037127}
   m_Layer: 1
   m_Name: Camera
   m_TagString: Untagged
@@ -185,6 +186,15 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8073847764402233277}
   m_Enabled: 1
+--- !u!45 &1464037127
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073847764402233277}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 283193ba753e84a2ca6b19f04113fec0, type: 2}
 --- !u!1 &8073847764553654468
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +587,7 @@ MonoBehaviour:
   independentAudioHandling: 0
   m_KeyOf: 0
   m_Music: {fileID: 5155576628024317162}
+  m_Controller: {fileID: 8073847765199990129}
 --- !u!114 &5155576628024317162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,9 +600,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8ed092cd6654f1c9575cc95fbe061c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MaxVolume: 0
+  m_MaxVolume: 1
   m_Template: {fileID: 0}
-  m_NumSources: 2
+  m_NumSources: 4
   m_Sources: []
   m_Instrument: {fileID: 0}
 --- !u!114 &8073847765199990129
