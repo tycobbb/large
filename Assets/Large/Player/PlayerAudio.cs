@@ -91,15 +91,29 @@ public class PlayerAudio : PlayerAudioBehaviour {
         var v = WalkVelocity;
 
         // pick melody note based on move dir
-        var dir = Vector3.Dot(Vector3.Normalize(v), transform.forward);
-        Debug.Log($"dir {dir}");
-        m_MelodyIdx = dir switch {
+        var dirW = Vector3.Dot(Vector3.Normalize(v), transform.forward);
+        m_MelodyIdx = dirW switch {
             var d when d > +0.8f => 0,
             var d when d > +0.3f => 1,
             var d when d > -0.3f => 2,
             var d when d > -0.8f => 3,
             _                    => 4,
         };
+
+        // pick key based on look dir
+        var dirL = Vector3.Dot(transform.forward, Vector3.forward);
+        var root = dirL switch {
+            var d when d > +0.8f => Root.C,
+            var d when d > +0.3f => Root.G,
+            var d when d > -0.3f => Root.D,
+            var d when d > -0.8f => Root.A,
+            _                    => Root.E,
+        };
+
+        if (m_Root != root) {
+            m_Root = root;
+            m_Key = new Key(m_Root);
+        }
 
         // copy a bunch of stuff from gpc
         float dist = v.magnitude * Time.timeScale;
