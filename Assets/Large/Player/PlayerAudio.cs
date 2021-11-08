@@ -180,7 +180,6 @@ public class PlayerAudio : PlayerAudioBehaviour {
 
     /// when the jump plays
     public override void PlayJumpSound() {
-        Debug.Log("play jump");
         PlayJump();
     }
 
