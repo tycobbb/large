@@ -30,6 +30,9 @@ public class PlayerAudio : PlayerAudioBehaviour {
     /// the melody line when walking
     Line[] m_FootstepsMelodies;
 
+    /// the line to play when fluttering
+    Line m_Flutter;
+
     /// the progress to play on jump
     Progression m_JumpProg;
 
@@ -44,6 +47,9 @@ public class PlayerAudio : PlayerAudioBehaviour {
 
     /// the time of the next step
     float m_NextStepTime = 0.0f;
+
+    /// the time to start fluttering
+    float m_FlutterTime = 0.0f;
 
     // -- lifecycle --
     void Awake() {
@@ -90,10 +96,17 @@ public class PlayerAudio : PlayerAudioBehaviour {
                 Quality.Maj5
             )
         );
+
+        m_Flutter = new Line(
+            Tone.I.Octave(),
+            Tone.II.Octave()
+        );
     }
 
     void Update() {
         Step();
+        Flutter();
+        PlayFlutter();
     }
 
     // -- commands --
@@ -131,6 +144,33 @@ public class PlayerAudio : PlayerAudioBehaviour {
         float dist = v.magnitude * Time.timeScale;
         float stride = 1.0f + dist * 0.3f;
         m_StepTime += (dist / stride) * (Time.deltaTime / c.Audio.StepTime);
+    }
+
+    /// flutter when airborne
+    void Flutter() {
+        var c = m_Controller.Controller;
+        if (c.isGrounded) {
+            m_FlutterTime = -1.0f;
+            return;
+        }
+
+        if (m_FlutterTime == -1.0f) {
+            m_FlutterTime = Time.time + 0.5f;
+        }
+    }
+
+    /// play flutter audio
+    void PlayFlutter() {
+        if (m_FlutterTime == -1.0f) {
+            return;
+        }
+
+        if (Time.time < m_FlutterTime) {
+            return;
+        }
+
+        m_Footsteps.PlayLine(m_Flutter, m_Key);
+        m_FlutterTime += 0.1f;
     }
 
     /// play step audio

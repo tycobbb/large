@@ -443,6 +443,10 @@ PrefabInstance:
       propertyPath: m_Instrument
       value: 
       objectReference: {fileID: 1375515814}
+    - target: {fileID: 5155576628024317162, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
+      propertyPath: m_NumSources
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8073847765199990127, guid: 6077f218e99854015b479fd32a0e710b, type: 3}
       propertyPath: m_RootOrder
       value: 3

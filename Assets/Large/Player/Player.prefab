@@ -572,7 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxVolume: 1
   m_Template: {fileID: 0}
-  m_NumSources: 4
+  m_NumSources: 8
   m_Sources: []
   m_Instrument: {fileID: 0}
 --- !u!114 &4773397954821589798
