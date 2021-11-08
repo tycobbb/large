@@ -3,10 +3,16 @@ using Hertzole.GoldPlayer;
 
 /// the player audio hooks
 public class PlayerAudio : PlayerAudioBehaviour {
+    // -- constants --
+    float c_JumpInterval = 3.0f / 60.0f;
+
     // -- nodes --
     [Header("nodes")]
-    [Tooltip("the music player")]
-    [SerializeField] Musicker m_Music;
+    [Tooltip("the footsteps music player")]
+    [SerializeField] Musicker m_Footsteps;
+
+    [Tooltip("the jump music player")]
+    [SerializeField] Musicker m_Jump;
 
     [Tooltip("the gold player controller")]
     [SerializeField] GoldPlayerController m_Controller;
@@ -24,8 +30,8 @@ public class PlayerAudio : PlayerAudioBehaviour {
     /// the melody line when walking
     Line[] m_FootstepsMelodies;
 
-    /// the chord to play on jump
-    Chord m_JumpChord;
+    /// the progress to play on jump
+    Progression m_JumpProg;
 
     /// the index of the current step
     int m_StepIdx;
@@ -74,9 +80,15 @@ public class PlayerAudio : PlayerAudioBehaviour {
             ),
         };
 
-        m_JumpChord = new Chord(
-            Tone.V,
-            Quality.Maj5
+        m_JumpProg = new Progression(
+            new Chord(
+                Tone.V,
+                Quality.Maj5
+            ),
+            new Chord(
+                Tone.IV,
+                Quality.Maj5
+            )
         );
     }
 
@@ -130,10 +142,10 @@ public class PlayerAudio : PlayerAudioBehaviour {
 
         // find line to play
         if (m_StepIdx % 2 == 0) {
-            m_Music.PlayLine(m_FootstepsBass, m_Key);
+            m_Footsteps.PlayLine(m_FootstepsBass, m_Key);
         } else {
             var melody = m_FootstepsMelodies[m_MelodyIdx];
-            m_Music.PlayTone(melody[m_StepIdx / 2], m_Key);
+            m_Footsteps.PlayTone(melody[m_StepIdx / 2], m_Key);
         }
 
         // advance step
@@ -143,7 +155,11 @@ public class PlayerAudio : PlayerAudioBehaviour {
 
     /// play jump audio
     void PlayJump() {
-        m_Music.PlayChord(m_JumpChord, 3.0f / 60.0f, m_Key);
+        m_Jump.PlayProgression(
+            m_JumpProg,
+            c_JumpInterval,
+            m_Key
+        );
     }
 
     // -- queries --
@@ -164,11 +180,11 @@ public class PlayerAudio : PlayerAudioBehaviour {
 
     /// when the jump plays
     public override void PlayJumpSound() {
+        Debug.Log("play jump");
         PlayJump();
     }
 
     /// when the land plays
     public override void PlayLandSound() {
-        Debug.Log($"play land");
     }
 }
