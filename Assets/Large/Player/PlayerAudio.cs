@@ -3,11 +3,6 @@ using Hertzole.GoldPlayer;
 
 /// the player audio hooks
 public class PlayerAudio : PlayerAudioBehaviour {
-    // -- config --
-    [Header("config")]
-    [Tooltip("the musical key")]
-    [SerializeField] Root m_KeyOf = Root.C;
-
     // -- nodes --
     [Header("nodes")]
     [Tooltip("the music player")]
@@ -17,23 +12,26 @@ public class PlayerAudio : PlayerAudioBehaviour {
     [SerializeField] GoldPlayerController m_Controller;
 
     // -- props --
+    /// the current key root
+    Root m_Root = Root.C;
+
     /// the musical key
     Key m_Key;
 
-    /// the line to play when walking
-    Line m_ForwardsLine;
+    /// the bass line when walking
+    Line m_FootstepsBass;
 
-    /// the line to play when walking backwards
-    Line m_BackwardsLine;
-
-    /// the line to play when walking sideways
-    Line m_SidewaysLine;
+    /// the melody line when walking
+    Line[] m_FootstepsMelodies;
 
     /// the chord to play on jump
     Chord m_JumpChord;
 
     /// the index of the current step
     int m_StepIdx;
+
+    /// the index of the melody note to play
+    int m_MelodyIdx;
 
     /// the current step time
     float m_StepTime = 0.0f;
@@ -44,22 +42,37 @@ public class PlayerAudio : PlayerAudioBehaviour {
     // -- lifecycle --
     void Awake() {
         // set props
-        m_Key = new Key(m_KeyOf);
+        m_Key = new Key(m_Root);
 
-        m_ForwardsLine = new Line(
+        m_FootstepsBass = new Line(
             Tone.I,
-            Tone.V
+            Tone.V,
+            Tone.III,
+            Tone.II
         );
 
-        m_BackwardsLine = new Line(
-            Tone.I,
-            Tone.III.Flat()
-        );
-
-        m_SidewaysLine = new Line(
-            Tone.I,
-            Tone.VII.Flat()
-        );
+        m_FootstepsMelodies = new Line[5] {
+            new Line(
+                Tone.I.Octave(),
+                Tone.V.Octave()
+            ),
+            new Line(
+                Tone.III.Octave(),
+                Tone.V.Octave()
+            ),
+            new Line(
+                Tone.VII,
+                Tone.V.Octave()
+            ),
+            new Line(
+                Tone.VII.Flat(),
+                Tone.V.Octave()
+            ),
+            new Line(
+                Tone.VII.Flat(),
+                Tone.III.Flat().Octave()
+            ),
+        };
 
         m_JumpChord = new Chord(
             Tone.V,
@@ -75,12 +88,23 @@ public class PlayerAudio : PlayerAudioBehaviour {
     // update current step progress
     void Step() {
         var c = m_Controller;
-        var v = m_Controller.Controller.velocity;
+        var v = WalkVelocity;
+
+        // pick melody note based on move dir
+        var dir = Vector3.Dot(Vector3.Normalize(v), transform.forward);
+        Debug.Log($"dir {dir}");
+        m_MelodyIdx = dir switch {
+            var d when d > +0.8f => 0,
+            var d when d > +0.3f => 1,
+            var d when d > -0.3f => 2,
+            var d when d > -0.8f => 3,
+            _                    => 4,
+        };
 
         // copy a bunch of stuff from gpc
-        float velocity = WalkVelocity.magnitude * Time.timeScale;
-        float stride = 1.0f + velocity * 0.3f;
-        m_StepTime += (velocity / stride) * (Time.deltaTime / c.Audio.StepTime);
+        float dist = v.magnitude * Time.timeScale;
+        float stride = 1.0f + dist * 0.3f;
+        m_StepTime += (dist / stride) * (Time.deltaTime / c.Audio.StepTime);
     }
 
     /// play step audio
@@ -91,17 +115,15 @@ public class PlayerAudio : PlayerAudioBehaviour {
         }
 
         // find line to play
-        var line = Vector3.Dot(WalkVelocity.normalized, Vector3.forward) switch {
-            var d when d >= +0.3f => m_ForwardsLine,
-            var d when d <= -0.3f => m_BackwardsLine,
-            _                     => m_SidewaysLine,
-        };
-
-        // play that line
-        m_Music.PlayTone(line[m_StepIdx], m_Key);
+        if (m_StepIdx % 2 == 0) {
+            m_Music.PlayLine(m_FootstepsBass, m_Key);
+        } else {
+            var melody = m_FootstepsMelodies[m_MelodyIdx];
+            m_Music.PlayTone(melody[m_StepIdx / 2], m_Key);
+        }
 
         // advance step
-        m_StepIdx = (m_StepIdx + 1) % line.Length;
+        m_StepIdx = (m_StepIdx + 1) % 4;
         m_NextStepTime += 0.5f;
     }
 
