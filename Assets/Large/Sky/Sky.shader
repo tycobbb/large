@@ -3,6 +3,8 @@ Shader "Custom/Desert" {
         _Scale ("Scale", Float) = 1.0
         _Period ("Period", Float) = 0.1
         _Bands ("Bands", Int) = -1
+        _FogMin ("Fog Min", Float) = 0.0
+        _FogHeight ("Fog Height", Float) = 500.0
         _HueMin ("Hue Min", Range(0.0, 2.0)) = 0.0
         _HueMax ("Hue Max", Range(0.0, 2.0)) = 0.0
         _Saturation ("Saturation", Range(0.0, 1.0)) = 0.4
@@ -46,6 +48,12 @@ Shader "Custom/Desert" {
 
             /// the number of bands
             float _Bands;
+
+            // the min y of the fog band
+            float _FogMin;
+
+            // the height of the fog band
+            float _FogHeight;
 
             /// the minimum hue
             float _HueMin;
@@ -153,15 +161,21 @@ Shader "Custom/Desert" {
                 st.x += _Time * _Period;
                 st.y += _Time * _Period;
 
-                // generate image
-                float3 c = IntoRgb(float3(
+                // generate color
+                float3 c = float3(
                     lerp(_HueMin, _HueMax, Image(st)),
                     _Saturation,
                     _Value
-                ));
+                );
+
+                // apply fog
+                float fog = saturate((_FogHeight - _FogMin - f.wPos.y) / _FogHeight);
+                fog *= fog * fog;
+                c.y -= fog;
+                c.z += fog;
 
                 // produce color
-                return fixed4(c, 1.0f);
+                return fixed4(IntoRgb(c), 1.0f);
             }
             ENDCG
         }

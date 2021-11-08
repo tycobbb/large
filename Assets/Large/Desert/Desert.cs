@@ -1,7 +1,6 @@
 using UnityEngine;
 
 /// the desert terrain
-[ExecuteAlways]
 public class Desert: MonoBehaviour {
     // -- nodes --
     [Header("nodes")]
@@ -12,7 +11,7 @@ public class Desert: MonoBehaviour {
     [SerializeField] Material m_TerrainHeight;
 
     // -- lifecycle --
-    void Update() {
+    void Start() {
         var td = m_Terrain.terrainData;
 
         // render a new heightmap

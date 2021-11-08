@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Bands: 40
+    - _Bands: 12
     - _Brightness: 0.0015
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -64,10 +64,15 @@ Material:
     - _DetailNormalMapScale: 1
     - _DistFading: 0.73
     - _DstBlend: 0
+    - _FogHeight: 13000
+    - _FogMin: 7700
     - _FormuParam: 0.53
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Hue: 0.303
+    - _HueMax: 1.86
+    - _HueMin: 1.66
     - _Iterations: 17
     - _Magic: 0.53
     - _Metallic: 0
@@ -75,13 +80,14 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Period: 0.5
-    - _Saturation: 0.85
+    - _Saturation: 0.203
     - _Scale: 0.001
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StepSize: 0.1
     - _UVSec: 0
+    - _Value: 1
     - _VolSteps: 20
     - _ZWrite: 1
     m_Colors:

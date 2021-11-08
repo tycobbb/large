@@ -3,10 +3,13 @@ Shader "Custom/Desert" {
         _Scale ("Scale", Float) = 1.0
         _Period ("Period", Float) = 0.1
         _Bands ("Bands", Int) = -1
+        _ViewDist ("View Distance", Float) = 0.0
         _HueMin ("Hue Min", Range(0.0, 2.0)) = 0.0
         _HueMax ("Hue Max", Range(0.0, 2.0)) = 0.0
-        _Saturation ("Saturation", Range(0.0, 1.0)) = 0.4
-        _Value ("Value", Range(0.0, 1.0)) = 0.9
+        _SatMin ("Saturation Min", Range(0.0, 1.0)) = 0.4
+        _SatMax ("Saturation Max", Range(0.0, 1.0)) = 0.4
+        _ValMin ("Value Min", Range(0.0, 1.0)) = 0.87
+        _ValMax ("Value Max", Range(0.0, 1.0)) = 0.87
     }
 
     SubShader {
@@ -19,6 +22,7 @@ Shader "Custom/Desert" {
             // -- config --
             #pragma vertex DrawVert
             #pragma fragment DrawFrag
+            #pragma multi_compile_fog
 
             // -- includes --
             #include "UnityCG.cginc"
@@ -34,6 +38,9 @@ Shader "Custom/Desert" {
             struct FragIn {
                 float4 cPos : SV_POSITION;
                 float3 wPos : TEXCOORD0;
+                float  saturation : TEXCOORD1;
+                float  value : TEXCOORD2;
+                UNITY_FOG_COORDS(3)
             };
 
             // -- props --
@@ -46,17 +53,26 @@ Shader "Custom/Desert" {
             /// the number of bands
             float _Bands;
 
+            /// the view distance
+            float _ViewDist;
+
             /// the minimum hue
             float _HueMin;
 
             /// the maximum hue
             float _HueMax;
 
-            /// the saturation
-            float _Saturation;
+            /// the min saturation
+            float _SatMin;
 
-            /// the value
-            float _Value;
+            /// the max saturation
+            float _SatMax;
+
+            /// the min value
+            float _ValMin;
+
+            /// the max value
+            float _ValMax;
 
             // -- noise --
             /// get random value at pt
@@ -135,6 +151,12 @@ Shader "Custom/Desert" {
                 o.cPos = UnityObjectToClipPos(pos);
                 o.wPos = mul(unity_ObjectToWorld, float4(pos, 1.0));
 
+                float dist = saturate(distance(_WorldSpaceCameraPos, o.wPos) / _ViewDist);
+                o.saturation = lerp(_SatMin, _SatMax, dist);
+                o.value = lerp(_ValMin, _ValMax, dist);
+
+                UNITY_TRANSFER_FOG(o, o.cPos);
+
                 return o;
             }
 
@@ -149,12 +171,17 @@ Shader "Custom/Desert" {
                 // generate image
                 float3 c = IntoRgb(float3(
                     lerp(_HueMin, _HueMax, Image(st)),
-                    _Saturation,
-                    _Value
+                    f.saturation,
+                    f.value
                 ));
 
                 // produce color
-                return fixed4(c, 1.0f);
+                fixed4 col = fixed4(c, 1.0f);
+
+                // apply fog
+                UNITY_APPLY_FOG(f.fogCoord, col);
+
+                return col;
             }
             ENDCG
         }
