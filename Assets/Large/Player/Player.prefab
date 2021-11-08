@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 4773397954821589798}
   - component: {fileID: 8073847765199990129}
   - component: {fileID: 7741282325461415205}
+  - component: {fileID: 667361943}
   m_Layer: 1
   m_Name: Player
   m_TagString: Player
@@ -586,7 +587,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   independentAudioHandling: 0
-  m_Music: {fileID: 5155576628024317162}
+  m_Footsteps: {fileID: 5155576628024317162}
+  m_Jump: {fileID: 4773397954821589798}
   m_Controller: {fileID: 8073847765199990129}
 --- !u!114 &5155576628024317162
 MonoBehaviour:
@@ -659,14 +661,14 @@ MonoBehaviour:
     canMoveAround: 1
     unscaledTime: 0
     walkingSpeeds:
-      forwardSpeed: 3
-      sidewaysSpeed: 2.5
+      forwardSpeed: 5
+      sidewaysSpeed: 3.5
       backwardsSpeed: 2
     canRun: 1
     runToggleMode: 0
     runSpeeds:
-      forwardSpeed: 7
-      sidewaysSpeed: 5.5
+      forwardSpeed: 30
+      sidewaysSpeed: 7.5
       backwardsSpeed: 5
     stamina:
       enableStamina: 0
@@ -681,12 +683,12 @@ MonoBehaviour:
     jumpingRequiresStamina: 0
     jumpStaminaRequire: 1
     jumpStaminaCost: 1
-    jumpHeight: 2
+    jumpHeight: 4
     airJump: 1
     airJumpTime: 0.1
     airJumpsAmount: 0
     allowAirJumpDirectionChange: 1
-    canCrouch: 1
+    canCrouch: 0
     crouchToggleMode: 0
     crouchSpeeds:
       forwardSpeed: 2
@@ -815,6 +817,23 @@ MonoBehaviour:
     action: {fileID: -5548793354506133487, guid: 6bfcf547d273e4741801c8d56d78df0d, type: 3}
   autoEnableInput: 1
   autoDisableInput: 1
+--- !u!114 &667361943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073847765199990131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8ed092cd6654f1c9575cc95fbe061c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxVolume: 1
+  m_Template: {fileID: 0}
+  m_NumSources: 4
+  m_Sources: []
+  m_Instrument: {fileID: 0}
 --- !u!1 &8073847765385277768
 GameObject:
   m_ObjectHideFlags: 0
